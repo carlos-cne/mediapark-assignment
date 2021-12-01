@@ -1,21 +1,14 @@
 import React, { FC, ReactNode } from "react";
 import * as S from "./styled";
 
-enum Colors {
-  primary = "primary",
-  secondary = "secondary",
-  gray = "gray",
-  light = "light"
-}
-
 type ButtonProps = {
   children?: ReactNode;
   onClick: () => void;
   label: string;
-  color: Colors;
+  color: "primary" | "gray" | "light" | "secondary";
 };
 
-const backgroundColor: Record<Colors, string> = {
+const backgroundColor: Record<string, string> = {
   primary: "#314BCE",
   secondary: "#FF897E",
   gray: "#AAADB7",
