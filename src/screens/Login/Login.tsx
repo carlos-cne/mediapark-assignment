@@ -26,6 +26,10 @@ const Login = () => {
     } else if (email === "") {
       setErrorMessage("Email is Required");
     }
+    const url = new URL(
+      `${process.env.REACT_APP_AUTH_URL}?client_id=${process.env.REACT_APP_ACCESS_KEY}&redirect_uri=${process.env.REACT_APP_BASE_URL}&response_type=code&scope=public`
+    );
+    window.open(url, "_self");
   };
 
   return (
@@ -47,7 +51,7 @@ const Login = () => {
           onChange={(e) => handlePassword(e)}
         />
         {errorMessage ? <p>{errorMessage}</p> : null}
-        <Button onClick={handleLogin} color="primary" label="Login" />
+        <Button onClick={handleLogin} color="primary" label="Log in" />
       </S.LoginContainer>
     </S.Wrapper>
   );
