@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "screens/Home/Home";
-import Home from "screens/Login/Login";
+import Home from "screens/Home/Home";
+import Login from "screens/Login/Login";
 import NotFound from "screens/NotFound/NotFound";
 import PrivateRoute from "./PrivateRoute";
 
