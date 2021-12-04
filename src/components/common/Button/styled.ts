@@ -10,6 +10,13 @@ export const Button = styled.button<ButtonColorProps>`
   height: 56px;
   border-radius: 8px;
   color: #ffffff;
-  font-weight: 500;
+  font-weight: bold;
   text-transform: capitalize;
+  outline: none;
+  border: none;
+  transition: opacity 0.3s;
+
+  :hover {
+    opacity: 0.9;
+  }
 `;
