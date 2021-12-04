@@ -18,7 +18,7 @@ describe("<Login/>", () => {
 
   it("should render error message 'Email and password are Required' when try to login with empty values for email and password", () => {
     render(<Login />);
-    userEvent.click(screen.getByRole("button", { name: "Login" }));
+    userEvent.click(screen.getByRole("button", { name: "Log in" }));
 
     const errorMessage = screen.getByText("Email and password are Required");
     expect(errorMessage).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe("<Login/>", () => {
     userEvent.type(inputEmail, "joaopaulo@email.com");
     expect(inputEmail).toHaveValue("joaopaulo@email.com");
 
-    userEvent.click(screen.getByRole("button", { name: "Login" }));
+    userEvent.click(screen.getByRole("button", { name: "Log in" }));
 
     const errorMessage = screen.getByText("Password is Required");
     expect(errorMessage).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe("<Login/>", () => {
     userEvent.type(inputPassword, "123456");
     expect(inputPassword).toHaveValue("123456");
 
-    userEvent.click(screen.getByRole("button", { name: "Login" }));
+    userEvent.click(screen.getByRole("button", { name: "Log in" }));
 
     const errorMessage = screen.getByText("Email is Required");
     expect(errorMessage).toBeInTheDocument();
