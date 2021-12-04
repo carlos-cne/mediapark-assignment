@@ -1,11 +1,13 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Input from "./Input";
 
 describe("<Input>", () => {
   it("should render input component", () => {
     render(
       <Input
+        value="Joao"
         name="name"
         type="text"
         onChange={jest.fn}
@@ -17,58 +19,46 @@ describe("<Input>", () => {
     expect(input).toBeInTheDocument();
   });
 
-  it("should render input with correct input value", () => {
+  it("should render input with correct input value", async () => {
     render(
       <Input
         name="name"
         type="text"
         onChange={jest.fn}
         placeholder="Full Name"
-        endIcon
       />
     );
 
-    const input = screen.getByPlaceholderText("Full Name") as HTMLInputElement;
-    fireEvent.change(input, { target: { value: "João Paulo Rodrigues" } });
-    expect(input.value).toBe("João Paulo Rodrigues");
-  });
-
-  it("should render input with endIcon", () => {
-    render(
-      <Input
-        name="name"
-        type="text"
-        onChange={jest.fn}
-        placeholder="Full Name"
-        endIcon={<h1>End Icon</h1>}
-      />
-    );
-
-    const endIcon = screen.getByRole("heading", { name: "End Icon" });
-    expect(endIcon).toBeInTheDocument();
+    const input = screen.getByPlaceholderText("Full Name");
+    userEvent.type(input, "João Paulo Rodrigues");
+    expect(input).toHaveValue("João Paulo Rodrigues");
   });
 
   it("should render input with type number", () => {
     render(
       <Input
-        name="name"
+        value={99999999}
+        name="number"
         type="number"
         onChange={jest.fn}
-        placeholder="Full Name"
+        placeholder="Phone Number"
       />
     );
 
-    const input = screen.getByPlaceholderText("Full Name") as HTMLInputElement;
+    const input = screen.getByPlaceholderText(
+      "Phone Number"
+    ) as HTMLInputElement;
     expect(input.type).toBe("number");
   });
 
-  it("should render input with correct background-colorw", () => {
+  it("should render input with correct background-color", () => {
     render(
       <Input
-        name="name"
-        type="number"
+        value="joao@email.com"
+        name="email"
+        type="email"
         onChange={jest.fn}
-        placeholder="Full Name"
+        placeholder="Email"
       />
     );
 
