@@ -1,12 +1,13 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC } from "react";
 import * as S from "./styled";
 
 type InputProps = {
   placeholder: string;
   name: string;
-  type: string;
-  onChange: () => void;
-  endIcon?: ReactNode;
+  type?: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string | number;
+  margin?: string;
 };
 
 const Input: FC<InputProps> = ({
@@ -14,17 +15,18 @@ const Input: FC<InputProps> = ({
   name,
   type,
   onChange,
-  endIcon
+  value,
+  margin
 }) => {
   return (
-    <S.InputWrapper data-testid="custom-input">
-      <input
+    <S.InputWrapper data-testid="custom-input" margin={margin}>
+      <S.Input
         name={name}
         type={type || "text"}
         onChange={onChange}
         placeholder={placeholder}
+        value={value}
       />
-      {endIcon}
     </S.InputWrapper>
   );
 };
