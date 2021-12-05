@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import Input from "components/common/Input/Input";
+import Input from "components/Input/Input";
 import Logo from "assets/logo.svg";
-import Button from "components/common/Button/Button";
+import Button from "components/Button/Button";
 import AuthContext from "context/provider/AuthProvider";
 
 import * as S from "./styled";
@@ -69,7 +69,7 @@ const Login = () => {
       );
 
       if (data) {
-        handleSetToken && handleSetToken(data.access_token);
+        handleSetToken(data.access_token);
       }
     } catch (error) {
       const newError = error as unknown as ErrorProps;

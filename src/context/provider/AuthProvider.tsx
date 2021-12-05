@@ -12,12 +12,14 @@ type Props = {
 
 type ContextProps = {
   token: string | null;
-  handleSetToken?: (tokenValue: string) => void;
-  handleRemoveToken?: () => void;
+  handleSetToken: (tokenValue: string) => void;
+  handleRemoveToken: () => void;
 };
 
 const AuthContext = createContext<ContextProps>({
-  token: null
+  token: null,
+  handleSetToken: () => {},
+  handleRemoveToken: () => {}
 });
 
 export default AuthContext;
