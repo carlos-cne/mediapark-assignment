@@ -12,7 +12,7 @@ const Navbar: FC<Props> = ({ onClick }) => {
   return (
     <S.Wrapper>
       <S.Image src={Logo} alt="Unplash black logo on left side" />
-      <Button onClick={onClick} color="primary">
+      <Button onClick={onClick} color="secondary">
         Log out
       </Button>
     </S.Wrapper>
