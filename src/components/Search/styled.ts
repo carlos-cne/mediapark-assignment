@@ -6,4 +6,7 @@ export const SearchWrapper = styled.div`
   max-width: 600px;
   margin: 20px;
   width: 100%;
+  @media (max-width: 800px) {
+    height: 48px;
+  }
 `;

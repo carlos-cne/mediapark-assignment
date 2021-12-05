@@ -8,6 +8,10 @@ export const Wrapper = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 800px) {
+    padding: 0 20px 0 30px;
+  }
 `;
 
 export const Image = styled.img`

@@ -16,6 +16,10 @@ export const InputWrapper = styled.div<InputWrapperProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 800px) {
+    height: 48px;
+  }
 `;
 
 export const Input = styled.input`

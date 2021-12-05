@@ -19,4 +19,8 @@ export const Button = styled.button<ButtonColorProps>`
   :hover {
     opacity: 0.9;
   }
+
+  @media (max-width: 800px) {
+    height: 48px;
+  }
 `;
