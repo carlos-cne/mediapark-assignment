@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Input from "components/common/Input/Input";
 import Logo from "assets/logo.svg";
 import Button from "components/common/Button/Button";
+import AuthContext from "context/provider/AuthProvider";
 
 import * as S from "./styled";
+import { useLocation, useNavigate } from "react-router";
+import api from "services/api";
+
+type ErrorProps = {
+  error: string;
+  error_description: string;
+};
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [, code] = location.search.split("=");
+  const { token, handleSetToken } = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -17,6 +31,19 @@ const Login = () => {
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
+
+  useEffect(() => {
+    if (code) {
+      handleGetToken();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code]);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate, token]);
 
   const handleLogin = () => {
     if (email === "" && password === "") {
@@ -27,9 +54,27 @@ const Login = () => {
       setErrorMessage("Email is Required");
     }
     const url = new URL(
-      `${process.env.REACT_APP_AUTH_URL}?client_id=${process.env.REACT_APP_ACCESS_KEY}&redirect_uri=${process.env.REACT_APP_BASE_URL}&response_type=code&scope=public`
+      `${process.env.REACT_APP_AUTH_URL}?client_id=${process.env.REACT_APP_ACCESS_KEY}&redirect_uri=${process.env.REACT_APP_BASE_URL}login&response_type=code&scope=public`
     );
     window.open(url, "_self");
+  };
+
+  const handleGetToken = async () => {
+    try {
+      setLoading(true);
+      const { data } = await api.post(
+        `https://unsplash.com/oauth/token?client_id=${process.env.REACT_APP_ACCESS_KEY}&client_secret=${process.env.REACT_APP_SECRET_KEY}&redirect_uri=${process.env.REACT_APP_BASE_URL}login&code=${code}&grant_type=authorization_code`
+      );
+
+      if (data) {
+        handleSetToken && handleSetToken(data.access_token);
+      }
+    } catch (error) {
+      const newError = error as unknown as ErrorProps;
+      setErrorMessage(newError.error_description);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,7 +96,13 @@ const Login = () => {
           onChange={(e) => handlePassword(e)}
         />
         {errorMessage ? <p>{errorMessage}</p> : null}
-        <Button onClick={handleLogin} color="primary" label="Log in" />
+        <Button
+          onClick={handleLogin}
+          color="primary"
+          label={!loading ? "Log in" : ""}
+        >
+          {loading ? <p>Loading</p> : null}
+        </Button>
       </S.LoginContainer>
     </S.Wrapper>
   );
