@@ -20,7 +20,7 @@ const Search: FC<Props> = ({ onClick, onChange, value, errorMessage }) => {
           name="search"
           placeholder="Searching..."
           onChange={onChange}
-          margin="0 20px"
+          margin="0 20px 0px 0px"
         />
         <Button onClick={onClick} color="primary">
           Submit
