@@ -25,10 +25,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setErrorMessage(null);
     setEmail(event.target.value);
   };
 
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setErrorMessage(null);
     setPassword(event.target.value);
   };
 
@@ -47,11 +49,11 @@ const Login = () => {
 
   const handleLogin = () => {
     if (email === "" && password === "") {
-      setErrorMessage("Email and password are Required");
+      return setErrorMessage("Email and password are Required");
     } else if (password === "") {
-      setErrorMessage("Password is Required");
+      return setErrorMessage("Password is Required");
     } else if (email === "") {
-      setErrorMessage("Email is Required");
+      return setErrorMessage("Email is Required");
     }
     const url = new URL(
       `${process.env.REACT_APP_AUTH_URL}?client_id=${process.env.REACT_APP_ACCESS_KEY}&redirect_uri=${process.env.REACT_APP_BASE_URL}login&response_type=code&scope=public`
@@ -89,19 +91,19 @@ const Login = () => {
           onChange={(e) => handleEmail(e)}
         />
         <Input
-          margin="20px 0 50px 0px"
+          margin="20px 0 0px 0px"
           value={password}
           name="password"
           placeholder="Password"
           onChange={(e) => handlePassword(e)}
         />
-        {errorMessage ? <p>{errorMessage}</p> : null}
-        <Button
-          onClick={handleLogin}
-          color="primary"
-          label={!loading ? "Log in" : ""}
-        >
-          {loading ? <p>Loading</p> : null}
+        {errorMessage ? (
+          <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
+        ) : (
+          <S.Div />
+        )}
+        <Button onClick={handleLogin} color="primary">
+          {loading ? <p>Loading...</p> : "Log in"}
         </Button>
       </S.LoginContainer>
     </S.Wrapper>

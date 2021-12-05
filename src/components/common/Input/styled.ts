@@ -9,7 +9,6 @@ export const InputWrapper = styled.div<InputWrapperProps>`
   color: #151940;
   height: 54px;
   border-radius: 8px;
-  min-width: 330px;
   width: 100%;
   cursor: pointer;
   margin: ${({ margin }) => margin};
