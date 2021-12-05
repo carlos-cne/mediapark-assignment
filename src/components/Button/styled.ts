@@ -13,7 +13,8 @@ export const Button = styled.button<ButtonColorProps>`
   text-transform: capitalize;
   outline: none;
   border: none;
-  transition: opacity 0.3s;
+  transition: opacity 0.1s ease-in;
+  min-width: 128px;
 
   :hover {
     opacity: 0.9;
