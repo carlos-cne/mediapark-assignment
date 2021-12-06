@@ -12,6 +12,7 @@ type Props = {
   errorMessage?: boolean;
   suggestions: string[];
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  setSuggestions: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const Search: FC<Props> = ({
@@ -20,7 +21,8 @@ const Search: FC<Props> = ({
   value,
   errorMessage,
   suggestions,
-  setSearchValue
+  setSearchValue,
+  setSuggestions
 }) => {
   return (
     <>
@@ -33,7 +35,11 @@ const Search: FC<Props> = ({
             onChange={onChange}
             margin="0 20px 0px 0px"
           />
-          <Dropdown suggestions={suggestions} setSearchValue={setSearchValue} />
+          <Dropdown
+            suggestions={suggestions}
+            setSearchValue={setSearchValue}
+            setSuggestions={setSuggestions}
+          />
         </S.Container>
         <Button onClick={onClick} color="primary">
           Submit
