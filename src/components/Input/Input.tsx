@@ -21,6 +21,7 @@ const Input: FC<InputProps> = ({
   return (
     <S.InputWrapper data-testid="custom-input" margin={margin}>
       <S.Input
+        autoComplete="off"
         name={name}
         type={type || "text"}
         onChange={onChange}
