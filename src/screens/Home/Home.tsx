@@ -1,10 +1,9 @@
+import React, { useContext, useEffect, useState } from "react";
+
 import Card from "components/Card/Card";
-import ImageSection from "components/ImageSection/ImageSection";
 import Navbar from "components/Navbar/Navbar";
 import Search from "components/Search/Search";
-import UserInfoSection from "components/UserInfoSection/UserInfoSection";
 import AuthContext from "context/provider/AuthProvider";
-import React, { useContext, useEffect, useState } from "react";
 import api from "services/api";
 
 import * as S from "./styled";
@@ -46,10 +45,61 @@ const Home = () => {
   const [searchValue, setSearchValue] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
   const [photos, setPhotos] = useState<PhotoProps[]>([]);
+  const [options, setOptions] = useState<string[]>([]);
+  const [error, setError] = useState<unknown>(null);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (searchValue.length > 0) {
+      setErrorMessage(false);
+    }
+  }, [searchValue]);
+
+  useEffect(() => {
+    const item = localStorage.getItem("@mediapark/options");
+    if (item) {
+      const storedNames = JSON.parse(item);
+      setOptions(storedNames);
+    }
+  }, []);
 
   const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+    const text = e.target.value;
+    let matches: string[] = [];
+    if (text.length > 0) {
+      matches = options.filter((option: string) => {
+        const regex = new RegExp(`${text}`, "gi");
+        return option.match(regex);
+      });
+    }
+    setSuggestions(matches);
+    setSearchValue(text);
   };
+
+  const setValueLocalStorage = (value: string[]) => {
+    window.localStorage.setItem("@mediapark/options", JSON.stringify(value));
+  };
+
+  const handleAutocompleteOptions = () => {
+    const item = localStorage.getItem("@mediapark/options");
+
+    if (item) {
+      const storedNames = JSON.parse(item);
+      const newStorageOptions = [
+        ...new Set([searchValue, ...storedNames])
+      ] as string[];
+
+      if (newStorageOptions.length > 5) {
+        newStorageOptions.pop();
+      }
+
+      setOptions(newStorageOptions);
+      setValueLocalStorage(newStorageOptions);
+    } else {
+      setValueLocalStorage([searchValue]);
+    }
+  };
+
   const handleSubmitSearch = async () => {
     if (searchValue === "") {
       setErrorMessage(true);
@@ -61,6 +111,8 @@ const Home = () => {
           process.env.REACT_APP_ACCESS_KEY
         }&query=${searchValue}&page=${1}&per_page=${28}`
       );
+
+      handleAutocompleteOptions();
 
       if (data) {
         setPhotos(
@@ -78,15 +130,9 @@ const Home = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      setError(error);
     }
   };
-
-  useEffect(() => {
-    if (searchValue.length > 0) {
-      setErrorMessage(false);
-    }
-  }, [searchValue]);
 
   return (
     <main>
@@ -97,53 +143,15 @@ const Home = () => {
           onClick={handleSubmitSearch}
           value={searchValue}
           errorMessage={errorMessage}
+          suggestions={suggestions}
+          setSearchValue={setSearchValue}
         />
       </S.Div>
       <S.Container>
-        {photos.map((photo) => (
-          <Card key={photo.id}>
-            <UserInfoSection
-              profile_photo={photo.user.profile_photo}
-              name={photo.user.name}
-            />
-            <ImageSection
-              photo={photo.photo}
-              alt_description={photo.alt_description}
-              likes={photo.likes}
-            />
-
-            <div
-              style={{
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                width: "220px",
-                height: "1.2em",
-                whiteSpace: "nowrap",
-                padding: "20px 10px 20px 15px",
-                fontSize: "12px",
-                display: "flex",
-                alignItems: "center"
-              }}
-            >
-              {photo.description ? (
-                <>
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "12px",
-                      marginRight: "5px"
-                    }}
-                  >
-                    Description:
-                  </span>
-                  {photo.description}
-                </>
-              ) : (
-                "No Description Available"
-              )}
-            </div>
-          </Card>
+        {photos?.map((photo) => (
+          <Card key={photo.id} photo={photo} />
         ))}
+        {error ? error : null}
       </S.Container>
     </main>
   );
