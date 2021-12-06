@@ -18,7 +18,7 @@ const obj = {
 
 describe("<Card/>", () => {
   it("should render Card with correct properties", () => {
-    render(<Card photo={obj} />);
+    render(<Card photo={obj} liked={false} handleLiked={jest.fn} />);
 
     expect(
       screen.getByAltText("dog running on beach during daytime")
