@@ -8,20 +8,18 @@ import * as S from "./styled";
 
 type Props = {
   photo: PhotoProps;
+  liked: boolean;
+  handleLiked: (photo_id: string) => Promise<void> | (() => void);
 };
 
-const Card: FC<Props> = ({ photo }) => {
+const Card: FC<Props> = ({ photo, liked, handleLiked }) => {
   return (
     <S.CardWrapper data-testid="custom-modal-element">
       <UserInfoSection
         profile_photo={photo.user.profile_photo}
         name={photo.user.name}
       />
-      <ImageSection
-        photo={photo.photo}
-        alt_description={photo.alt_description}
-        likes={photo.likes}
-      />
+      <ImageSection liked={liked} photo={photo} handleLiked={handleLiked} />
       <DescriptionSection description={photo.description} />
     </S.CardWrapper>
   );
