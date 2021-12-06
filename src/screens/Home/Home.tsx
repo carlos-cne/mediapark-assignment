@@ -48,6 +48,7 @@ const Home = () => {
   const [options, setOptions] = useState<string[]>([]);
   const [error, setError] = useState<unknown>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [liked, setLiked] = useState<string[]>([]);
 
   useEffect(() => {
     if (searchValue.length > 0) {
@@ -62,6 +63,22 @@ const Home = () => {
       setOptions(storedNames);
     }
   }, []);
+
+  const handleLiked = async (photo_id: string) => {
+    try {
+      if (liked.includes(photo_id)) {
+        await api.delete(`https://api.unsplash.com/photos/${photo_id}/like`);
+        setLiked((prev) => [
+          ...prev.filter((item: string) => item !== photo_id)
+        ]);
+      } else {
+        await api.post(`https://api.unsplash.com/photos/${photo_id}/like`);
+        setLiked((prev) => [...prev, photo_id]);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  };
 
   const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
@@ -109,7 +126,7 @@ const Home = () => {
       const { data } = await api.get(
         `https://api.unsplash.com/search/photos?client_id=${
           process.env.REACT_APP_ACCESS_KEY
-        }&query=${searchValue}&page=${1}&per_page=${28}`
+        }&query=${searchValue}&per_page=${28}`
       );
 
       handleAutocompleteOptions();
@@ -145,11 +162,17 @@ const Home = () => {
           errorMessage={errorMessage}
           suggestions={suggestions}
           setSearchValue={setSearchValue}
+          setSuggestions={setSuggestions}
         />
       </S.Div>
       <S.Container>
         {photos?.map((photo) => (
-          <Card key={photo.id} photo={photo} />
+          <Card
+            key={photo.id}
+            photo={photo}
+            liked={liked}
+            handleLiked={handleLiked}
+          />
         ))}
         {error ? error : null}
       </S.Container>
