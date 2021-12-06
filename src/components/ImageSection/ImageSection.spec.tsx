@@ -21,7 +21,7 @@ const obj2 = {
 
 describe("<ImageSection/>", () => {
   it("should render ImageSection with correct properties", () => {
-    render(<ImageSection photo={obj} liked={false} handleLiked={jest.fn} />);
+    render(<ImageSection photo={obj} liked={[""]} handleLiked={jest.fn} />);
 
     expect(
       screen.getByAltText("dog running on beach during daytime")
@@ -31,7 +31,7 @@ describe("<ImageSection/>", () => {
   });
 
   it("should render ImageSection with one like", () => {
-    render(<ImageSection photo={obj2} liked={false} handleLiked={jest.fn} />);
+    render(<ImageSection photo={obj2} liked={[""]} handleLiked={jest.fn} />);
 
     expect(
       screen.getByAltText("dog running on beach during daytime")
