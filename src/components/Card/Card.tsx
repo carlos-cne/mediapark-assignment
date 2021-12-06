@@ -8,7 +8,7 @@ import * as S from "./styled";
 
 type Props = {
   photo: PhotoProps;
-  liked: boolean;
+  liked: string[];
   handleLiked: (photo_id: string) => Promise<void> | (() => void);
 };
 

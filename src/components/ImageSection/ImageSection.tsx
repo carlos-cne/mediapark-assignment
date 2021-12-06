@@ -6,12 +6,12 @@ import * as S from "./styled";
 import { PhotoProps } from "screens/Home/Home";
 
 export type Props = {
-  liked: boolean;
+  liked: string[];
   photo: PhotoProps;
   handleLiked: (photo_id: string) => Promise<void> | (() => void);
 };
 
-const ImageSection: FC<Props> = ({ photo, liked = false, handleLiked }) => {
+const ImageSection: FC<Props> = ({ photo, liked, handleLiked }) => {
   return (
     <S.Wrapper>
       <S.Image loading="lazy" src={photo.photo} alt={photo.alt_description} />
@@ -21,7 +21,7 @@ const ImageSection: FC<Props> = ({ photo, liked = false, handleLiked }) => {
       <S.LikeImage
         onClick={() => handleLiked(photo.id)}
         loading="lazy"
-        src={!liked ? Like : Liked}
+        src={!liked.includes(photo.id) ? Like : Liked}
         alt={Like}
       />
     </S.Wrapper>
