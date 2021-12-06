@@ -88,12 +88,14 @@ const Login = () => {
           value={email}
           name="email"
           placeholder="Email"
+          type="email"
           onChange={(e) => handleEmail(e)}
         />
         <Input
           margin="20px 0 0px 0px"
           value={password}
           name="password"
+          type="password"
           placeholder="Password"
           onChange={(e) => handlePassword(e)}
         />
